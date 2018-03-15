@@ -1,0 +1,68 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 100px;
+  fill: white;
+}
+
+.App-header {
+  /*background: linear-gradient(#0aa3bc, #5256bc);*/
+  background: url('https://www.shopplaywin.com/static/img/bg-burst-long.e619bc6.jpg');
+  background-size: cover;
+  height: 150px;
+  padding: 20px;
+  color: white;
+  text-shadow: 1px 1px rgba(0,0,0,0.2)
+}
+
+.App-pieces {
+  display: flex;
+  justify-content: center;
+  padding: 10px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-size: smaller;
+}
+
+.App-header h1 {
+  margin: -30px 0 0 0
+}
+
+.App-title {
+  font-size: 1.5em;
+}
+
+.App-section {
+  max-width: 500px;
+  margin: 20px auto;
+  padding: var(--panelPadding);
+  border-radius: var(--smallBorderRadius);
+  border: 1px solid var(--siteSecondaryColor);
+  background: white;
+}
+
+.App-how ul {
+  text-align: left;
+}
+
+.App-how li {
+  margin-bottom: 15px;
+}
+
+.App-button {
+  display: inline-block;
+  color: white;
+  font-size: 20px;
+  border-radius: 3px;
+  background: #40a75a;
+  padding: 20px 40px;
+  text-transform: uppercase;
+  margin: 5px;
+  white-space: nowrap;
+}
+
+.App-button span {
+  margin-right: 8px;
+}

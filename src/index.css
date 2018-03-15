@@ -1,0 +1,31 @@
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--siteBodyColor);
+  font-family: var(--siteFontFamily);
+}
+
+:root {
+  --siteBodyColor: #f4f7fa;
+  --smallBorderRadius: 4px;
+  --panelPadding: 20px;
+  --maxSiteWidth: 1180px;
+  --siteFontFamily: "Avenir Next", -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+  --siteColor: #016AB2;
+  --siteSecondaryTextColor: rgba(81, 98, 152, .33);
+  --siteSecondaryColor: #dae1e9;
+  --siteTertiaryTextColor: #839fbd;
+  --colorChangeNegative: #f60;
+  --colorChangePositive: #57bf00;
+}
+
+html {
+  box-sizing: border-box;
+}
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+input[type="file"] {
+  display: none;
+}
