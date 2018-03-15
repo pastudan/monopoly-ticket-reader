@@ -27,7 +27,8 @@
 }
 
 .App-header h1 {
-  margin: -30px 0 0 0
+  margin: -30px 0 0 0;
+  text-transform: uppercase;
 }
 
 .App-title {
@@ -56,11 +57,34 @@
   color: white;
   font-size: 20px;
   border-radius: 3px;
-  background: #40a75a;
+  background-color: #40a75a;
   padding: 20px 40px;
   text-transform: uppercase;
   margin: 5px;
   white-space: nowrap;
+  position: relative;
+  width: 240px;
+}
+
+.App-button.uploading {
+  background-color: #c2c2c2;
+}
+
+.App-upload-progress-bar {
+  background-color: #40a75a;
+  transition: width 400ms;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 0;
+  height: 100%;
+  border-radius: var(--smallBorderRadius)
+}
+
+.App-upload-progress span {
+  position: absolute;
+  z-index: 1;
+  left: 57px;
 }
 
 .App-button span {

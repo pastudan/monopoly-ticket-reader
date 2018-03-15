@@ -10,10 +10,10 @@ const redisClient = redis.createClient();
 
 app.post('/upload', function (req, res) {
   const uuid = uuidv4();
-  const writeStream = fs.createWriteStream(uuid)
+  const writeStream = fs.createWriteStream(`image-uploads/original/${uuid}`)
   req.on('end', () => {
     res.sendStatus(200)
-    redisClient.push('queue', uuid)
+    redisClient.lpush('crop-queue', uuid)
   }).pipe(writeStream)
 })
 
