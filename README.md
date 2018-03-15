@@ -4,7 +4,7 @@ This web app accepts an image upload, finds any rectangular [Monopoly](https://w
 ### Image Processor Setup Instructions
 ```bash
 # Enter image processor directory 
-cd monopoly-ticket-reader/
+cd image-processor/
 
 # Set up a virtualenv
 virtualenv venv
