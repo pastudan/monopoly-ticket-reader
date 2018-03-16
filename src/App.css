@@ -14,7 +14,7 @@
   height: 150px;
   padding: 20px;
   color: white;
-  text-shadow: 1px 1px rgba(0,0,0,0.2)
+  text-shadow: 1px 1px rgba(0, 0, 0, 0.2)
 }
 
 .App-pieces {
@@ -42,6 +42,18 @@
   border-radius: var(--smallBorderRadius);
   border: 1px solid var(--siteSecondaryColor);
   background: white;
+}
+
+.App-image {
+  width: 150px;
+  min-height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+  border-radius: var(--smallBorderRadius);
+  background: var(--siteSecondaryColor);
+  border: 1px solid var(--siteTertiaryTextColor);
 }
 
 .App-how ul {
@@ -89,4 +101,54 @@
 
 .App-button span {
   margin-right: 8px;
+}
+
+.App-ticket {
+  margin: 20px 0;
+  position: relative;
+}
+
+.App-ticket-image {
+  width: 100%;
+}
+
+.App-ticket-meta {
+  position: absolute;
+  border-radius: 10px;
+  background: black;
+  color: white;
+  font-size: 10px;
+  padding: 2px 7px;
+  bottom: -1px;
+}
+
+.App-ticket-meta-label {
+  text-transform: uppercase;
+}
+
+.App-ticket-meta-label-a {
+  right: 147px;
+}
+
+.App-ticket-meta-label-b {
+  right: 97px;
+}
+
+.App-ticket-meta-label-c {
+  right: 47px;
+}
+
+.App-ticket-meta-label-d {
+  right: -2px
+}
+
+.App-ticket-meta-time {
+  left: -8px;
+}
+
+.App-ticket-meta-time svg{
+  fill: white;
+  display: inline-block;
+  height: 10px;
+  margin: 0 6px -2px -3px;
 }
