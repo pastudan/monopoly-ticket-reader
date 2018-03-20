@@ -4,12 +4,16 @@ import FontAwesome from 'react-fontawesome'
 import ReconnectingWebSocket from 'reconnecting-websocket'
 import moment from 'moment'
 
+const API_HOST = process.env.REACT_APP_API_URL
+
 class App extends Component {
   state = {
     uploading: false,
     uploadPercent: 0,
     socketConnected: false,
-    images: []
+    images: [],
+    classify: window.location.pathname === '/classify',
+    classifyPieceId: '',
   }
 
   componentDidMount () {
@@ -38,6 +42,18 @@ class App extends Component {
     })
 
     window.setInterval(this.forceUpdate.bind(this), 15 * 1000) // force re-render every 15 seconds to update moment timestamps
+
+    if (this.state.classify) {
+      this.fetchClassify()
+    }
+  }
+
+  fetchClassify (pieceId, label) {
+    window.fetch(`${API_HOST}/classify${pieceId ? `?piece=${pieceId}&label=${label}` : ''}`)
+      .then(res => res.json())
+      .then(res => {
+        this.setState({classifyPieceId: res.piece_id})
+      })
   }
 
   auth = (authKey) => {
@@ -67,7 +83,7 @@ class App extends Component {
     const [uuid, ticketIndex, pieceIndex] = piece.split('_')
     const images = this.state.images
     const imageIndex = images.map(img => img.uuid).indexOf(uuid)
-    if (typeof images[imageIndex].tickets[ticketIndex] !== 'object'){
+    if (typeof images[imageIndex].tickets[ticketIndex] !== 'object') {
       images[imageIndex].tickets[ticketIndex] = {}
     }
     images[imageIndex].tickets[ticketIndex][pieceIndex] = label
@@ -82,7 +98,7 @@ class App extends Component {
 
     // Unfortunately, window.fetch does not currently support progress events, so we'll use an XHR here.
     const xhr = new XMLHttpRequest()
-    xhr.open('POST', `${process.env.REACT_APP_API_URL}/upload`, true)
+    xhr.open('POST', `${API_HOST}/upload`, true)
     xhr.setRequestHeader('Authorization', `Bearer ${this.authKey}`)
     xhr.addEventListener('load', () => {
       if (xhr.status === 200) {
@@ -111,6 +127,17 @@ class App extends Component {
     this.setState({uploading: true})
   }
 
+  classifyInputChange = (e) => {
+    const val = e.target.value.toUpperCase()
+
+    if (val.length !== 5) {
+      return
+    }
+
+    e.target.value = ''
+    this.fetchClassify(this.state.classifyPieceId, val)
+  }
+
   render () {
     //TODO save image list to localstorage and populate state next visit
 
@@ -120,7 +147,7 @@ class App extends Component {
     this.state.images.forEach(image => {
       for (let i = 0; i < image.numTickets; i++) {
         tickets.unshift(<div className="App-ticket" key={`${image.uuid}_${i}`}>
-          <img className="App-ticket-image" src={`/ticket/${image.uuid}_${i}.jpg`} alt={`${image.uuid}_${i}`}/>
+          <img className="App-ticket-image" src={`${API_HOST}/ticket/${image.uuid}_${i}.jpg`} alt={`${image.uuid}_${i}`}/>
           <div className="App-ticket-meta App-ticket-meta-time">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
               <path d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm57.1 350.1L224.9 294c-3.1-2.3-4.9-5.9-4.9-9.7V116c0-6.6 5.4-12 12-12h48c6.6 0 12 5.4 12 12v137.7l63.5 46.2c5.4 3.9 6.5 11.4 2.6 16.8l-28.2 38.8c-3.9 5.3-11.4 6.5-16.8 2.6z"/>
@@ -131,7 +158,7 @@ class App extends Component {
           <div className="App-ticket-meta App-ticket-meta-label App-ticket-meta-label-b">{(image.tickets[i] && image.tickets[i].b) || '...'}</div>
           <div className="App-ticket-meta App-ticket-meta-label App-ticket-meta-label-c">{(image.tickets[i] && image.tickets[i].c) || '...'}</div>
           <div className="App-ticket-meta App-ticket-meta-label App-ticket-meta-label-d">{(image.tickets[i] && image.tickets[i].d) || '...'}</div>
-          </div>)
+        </div>)
       }
     })
 
@@ -145,6 +172,11 @@ class App extends Component {
           </svg>
           <h1 className="App-title">Scanopoly</h1>
         </header>
+
+        {this.state.classify ? <section className="App-section">
+          <img src={`${API_HOST}/piece/${this.state.classifyPieceId}.jpg`} alt=""/>
+          <input type="text" onChange={this.classifyInputChange}/>
+        </section> : null}
 
         <section className="App-upload" style={{marginTop: 30}}>
           <label className={`App-button ${this.state.uploading ? 'uploading' : ''}`}>
@@ -162,7 +194,7 @@ class App extends Component {
         {image ? <section className="App-section App-image-info">
 
           {image.resized ?
-            <img className="App-image" src={image.cropped ? `/contour/${image.uuid}.jpg` : `/resized/${image.uuid}.jpg`} alt={image.uuid}/> :
+            <img className="App-image" src={image.cropped ? `${API_HOST}/contour/${image.uuid}.jpg` : `${API_HOST}/resized/${image.uuid}.jpg`} alt={image.uuid}/> :
             <div className="App-image">image</div>}
           {image.cropped ? `${image.numTickets} ticket${image.numTickets !== 1 ? 's' : ''} found. Missing tickets? Try scanning the missing ones alone` : 'Searching for tickets...'}
         </section> : null}

@@ -21,7 +21,15 @@ python scan.py -i input-images/2018-sample-ticket.JPG
 ```
 
 ### TensorFlow Information
-The model was created by following instructions in the [TensorFlow For Poets](https://codelabs.developers.google.com/codelabs/tensorflow-for-poets/) tutorial with some slight modifications to the retraining script. The biggest issue I've found using this approach is having enough images of the rare pieces to train an effective model. Eventually, I'd like to use a low-shot learning approach, similar to this [ICCV challenge](http://www.msceleb.org/challenge2/2017) which identifies faces based on as few as one image. 
+The model was created by following instructions in the [TensorFlow For Poets](https://codelabs.developers.google.com/codelabs/tensorflow-for-poets/) tutorial with some slight modifications to the retraining script. The biggest issue I've found using this approach is having enough images of the rare pieces to train an effective model. Eventually, I'd like to use a low-shot learning approach, similar to this [ICCV challenge](http://www.msceleb.org/challenge2/2017) which identifies faces based on as few as one image.
+
+Retraining the model:
+```
+cd tensorflow-imagenet
+IMAGE_SIZE=224
+ARCHITECTURE="mobilenet_0.50_${IMAGE_SIZE}"
+python3 -m scripts.retrain  --bottleneck_dir=tf_files/bottlenecks  --how_many_training_steps=500  --model_dir=tf_files/models/  --summaries_dir=tf_files/training_summaries/"${ARCHITECTURE}"  --output_graph=tf_files/retrained_graph.pb  --output_labels=tf_files/retrained_labels.txt  --architecture="${ARCHITECTURE}"  --image_dir=tf_files/monopoly-pieces
+```
 
 ### Development
 - On OSX, simply run `yarn start` to start the UI. 

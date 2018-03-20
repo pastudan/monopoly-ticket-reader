@@ -5,8 +5,13 @@ const redis = require('redis')
 const WebSocket = require('ws')
 const shortid = require('shortid')
 const sharp = require('sharp')
+const PgClient = require('pg').Client
+const cors = require('cors')
 
-const wsPort = process.env.PORT || 8080
+const pgClient = new PgClient()
+pgClient.connect()
+const apiPort = process.env.API_PORT || 3001
+const wsPort = process.env.WS_PORT || 8080
 const app = express()
 const redisClient = redis.createClient()
 const redisSubscriber = redis.createClient()
@@ -36,8 +41,12 @@ wss.on('connection', function connection (ws) {
     if (!authKey) {
       authKey = shortid.generate()
       ws.authKey = authKey
-      ws.send(`auth|${authKey}`)
       wsAuthMapping[authKey] = ws
+
+      if (ws.readyState === WebSocket.OPEN) {
+        ws.send(`auth|${authKey}`)
+      }
+
       // TODO add authKey to DB
     }
 
@@ -69,12 +78,29 @@ redisSubscriber.on('message', function (channel, payload) {
 
 function cropUpdate (payload) {
   const uuid = payload.split(':')[0]
-  uuidWsMapping[uuid] && uuidWsMapping[uuid].send(`crop-update|${payload}`)
+  const client = uuidWsMapping[uuid]
+
+  if (!client || client.readyState !== WebSocket.OPEN) {
+    return
+  }
+
+  client.send(`crop-update|${payload}`)
 }
 
-function mlUpdate (payload) {
+async function mlUpdate (payload) {
   const uuid = payload.split('_')[0]
-  uuidWsMapping[uuid] && uuidWsMapping[uuid].send(`ml-update|${payload}`)
+  const [pieceId, label] = payload.split(':')
+  const client = uuidWsMapping[uuid]
+
+  // add image to db
+  console.log('doing DB')
+  const res = await pgClient.query('INSERT INTO pieces (piece_id, machine_label) VALUES ($1::text, $2::text)', [pieceId, label])
+
+  if (!client || client.readyState !== WebSocket.OPEN) {
+    return
+  }
+
+  client.send(`ml-update|${payload}`)
 }
 
 function resize (uuid) {
@@ -82,11 +108,16 @@ function resize (uuid) {
     .resize(400)
     .rotate()
     .toFile(`image-uploads/resized/${uuid}.jpg`, (err, info) => {
-      uuidWsMapping[uuid] && uuidWsMapping[uuid].send(`resize-update|${uuid}`)
+      const client = uuidWsMapping[uuid]
+      if (!client || client.readyState !== WebSocket.OPEN) {
+        return
+      }
+
+      client.send(`resize-update|${uuid}`)
     })
 }
 
-//TODO allow CORS for prod
+app.use(cors())
 
 app.post('/upload', function (req, res) {
   const authKey = typeof req.headers.authorization === 'string' && req.headers.authorization.split(' ')[1]
@@ -108,9 +139,24 @@ app.post('/upload', function (req, res) {
   }).pipe(writeStream)
 })
 
+app.get('/classify', async function (req, res) {
+  // TODO add authentication and only allow classification from admins
+  res.sendStatus(401)
+  return
+
+  const {piece, label} = req.query
+  console.log(piece, label)
+  if (piece) {
+    await pgClient.query('update pieces set human_label = $1::text where piece_id = $2::text', [label, piece])
+  }
+
+  const data = await pgClient.query('select * from pieces where human_label is null limit 1')
+  responseObject = data.rows[0] || {}
+  res.send(responseObject)
+})
+
 app.use(express.static('image-uploads'))
 
-const port = process.env.PORT || 3001
-app.listen(port, function () {
-  console.log(`listening on port ${port}`)
+app.listen(apiPort, function () {
+  console.log(`listening on port ${apiPort}`)
 })

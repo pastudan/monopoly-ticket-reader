@@ -13,7 +13,10 @@ echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/source
 
 # install dependencies
 sudo apt-get update
-sudo apt-get install -y nodejs redis-server yarn
+sudo apt-get install -y nodejs redis-server yarn virtualenv
+
+# install app
+yarn
 
 # install pm2, our process daemonizer
 sudo yarn global add pm2
