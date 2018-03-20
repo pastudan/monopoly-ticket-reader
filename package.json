@@ -1,5 +1,5 @@
 {
-  "name": "abcde",
+  "name": "monopoly-ticket-reader",
   "version": "0.1.0",
   "private": true,
   "description": "Reads gamepieces from the 2018 monopoly game that is being played at Albertons, Safeway, and other grocery stores.",
@@ -18,10 +18,10 @@
     "ws": "^5.0.0"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "bash bin/set_dev_env.sh && react-scripts start",
+    "start-local-only": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
   },
-  "proxy": "http://localhost:3001/"
 }

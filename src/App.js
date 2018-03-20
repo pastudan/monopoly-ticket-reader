@@ -82,9 +82,9 @@ class App extends Component {
 
     // Unfortunately, window.fetch does not currently support progress events, so we'll use an XHR here.
     const xhr = new XMLHttpRequest()
-    xhr.open('POST', '/upload', true)
+    xhr.open('POST', `${process.env.REACT_APP_API_URL}/upload`, true)
     xhr.setRequestHeader('Authorization', `Bearer ${this.authKey}`)
-    xhr.addEventListener('load', (e) => {//Call a function when the state changes.
+    xhr.addEventListener('load', () => {
       if (xhr.status === 200) {
         const images = this.state.images
         images.push({
@@ -127,10 +127,10 @@ class App extends Component {
             </svg>
             {moment(image.time).fromNow()}
           </div>
-          <div className="App-ticket-meta App-ticket-meta-label App-ticket-meta-label-a">{image.tickets[i] && image.tickets[i].a || '...'}</div>
-          <div className="App-ticket-meta App-ticket-meta-label App-ticket-meta-label-b">{image.tickets[i] && image.tickets[i].b || '...'}</div>
-          <div className="App-ticket-meta App-ticket-meta-label App-ticket-meta-label-c">{image.tickets[i] && image.tickets[i].c || '...'}</div>
-          <div className="App-ticket-meta App-ticket-meta-label App-ticket-meta-label-d">{image.tickets[i] && image.tickets[i].d || '...'}</div>
+          <div className="App-ticket-meta App-ticket-meta-label App-ticket-meta-label-a">{(image.tickets[i] && image.tickets[i].a) || '...'}</div>
+          <div className="App-ticket-meta App-ticket-meta-label App-ticket-meta-label-b">{(image.tickets[i] && image.tickets[i].b) || '...'}</div>
+          <div className="App-ticket-meta App-ticket-meta-label App-ticket-meta-label-c">{(image.tickets[i] && image.tickets[i].c) || '...'}</div>
+          <div className="App-ticket-meta App-ticket-meta-label App-ticket-meta-label-d">{(image.tickets[i] && image.tickets[i].d) || '...'}</div>
           </div>)
       }
     })
