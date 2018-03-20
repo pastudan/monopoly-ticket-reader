@@ -218,6 +218,5 @@ else:
         for ticketIndex in range(0, numTickets):
             for pieceIndex in ['a', 'b', 'c', 'd']:
                 redis_client.lpush('ml-queue', "%s_%s_%s" % (uuid, ticketIndex, pieceIndex))
-                print ("qqq %s_%s_%s" % (uuid, ticketIndex, pieceIndex))
         redis_client.publish('crop-updates', "%s:%d" % (uuid, numTickets))
         redis_client.lrem('crop-processing', 0, uuid)

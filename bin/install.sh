@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# fetch code
+git clone https://github.com/pastudan/monopoly-ticket-reader.git
+cd monopoly-ticket-reader
+
 # add node to repo list
 curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
 
@@ -13,9 +17,6 @@ sudo apt-get install -y nodejs redis-server yarn
 
 # install pm2, our process daemonizer
 sudo yarn global add pm2
-
-# fetch code
-git clone https://github.com/pastudan/monopoly-ticket-reader.git
 
 # setup virtual environment for the image processor
 virtualenv image-processor/venv
