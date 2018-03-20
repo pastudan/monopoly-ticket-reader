@@ -1,3 +1,0 @@
-[submodule "tensorflow-imagenet"]
-	path = tensorflow-imagenet
-	url = git@github.com:pastudan/tensorflow-for-poets-2.git
