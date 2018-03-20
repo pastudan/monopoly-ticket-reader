@@ -1,0 +1,13 @@
+venv
+**/*.pyc
+tf_files/*
+!tf_files/retrained_graph.pb
+!tf_files/retrained_labels.txt
+.idea/
+**/*~
+gradle*
+libs/
+local.properties
+android.iml
+.gradle/
+android/assets/*
