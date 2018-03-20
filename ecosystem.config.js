@@ -5,6 +5,10 @@ module.exports = {
       script: 'api/index.js',
       max_restarts: 10,
       min_uptime: 5000,
+      env: {
+        "API_PORT": "3001",
+        "WS_PORT": "3002",
+      },
       log_date_format: 'YYYY-MM-DD HH:mm Z'
     }, {
       name: 'Image Processor',
