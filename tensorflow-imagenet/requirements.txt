@@ -1,2 +1,2 @@
 redis
-tensorflow
+tensorflow==1.5

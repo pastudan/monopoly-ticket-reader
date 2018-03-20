@@ -149,7 +149,7 @@ if __name__ == "__main__":
     else:
         while True:
             file_id = redis_client.brpoplpush('ml-queue', 'ml-processing')
-            path = "../image-uploads/piece/{}.jpg".format(file_id)
+            path = "image-uploads/piece/{}.jpg".format(file_id)
             print('processing ' + path)
             label = process(path)
             thing = "{}:{}".format(file_id, label)
