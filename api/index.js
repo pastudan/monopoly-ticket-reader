@@ -92,7 +92,7 @@ async function mlUpdate (payload) {
   const [pieceId, label] = payload.split(':')
   const client = uuidWsMapping[uuid]
 
-  if (client && client.readyState !== WebSocket.OPEN) {
+  if (client && client.readyState === WebSocket.OPEN) {
     client.send(`ml-update|${payload}`)
   }
 
