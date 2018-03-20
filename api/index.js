@@ -92,15 +92,12 @@ async function mlUpdate (payload) {
   const [pieceId, label] = payload.split(':')
   const client = uuidWsMapping[uuid]
 
-  // add image to db
-  console.log('doing DB')
-  const res = await pgClient.query('INSERT INTO pieces (piece_id, machine_label) VALUES ($1::text, $2::text)', [pieceId, label])
-
-  if (!client || client.readyState !== WebSocket.OPEN) {
-    return
+  if (client && client.readyState !== WebSocket.OPEN) {
+    client.send(`ml-update|${payload}`)
   }
 
-  client.send(`ml-update|${payload}`)
+  // add image to db
+  const res = await pgClient.query('INSERT INTO pieces (piece_id, machine_label) VALUES ($1::text, $2::text)', [pieceId, label])
 }
 
 function resize (uuid) {
