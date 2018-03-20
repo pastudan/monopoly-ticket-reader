@@ -20,7 +20,7 @@ module.exports = {
     }, {
       name: 'Model Server',
       script: 'tensorflow-imagenet/scripts/label_image.py',
-      args: '--graph tensorflow-imagenet/tf_files/retrained_graph.pb',
+      args: '--graph tensorflow-imagenet/tf_files/retrained_graph.pb --labels tensorflow-imagenet/tf_files/retrained_labels.txt',
       interpreter: 'tensorflow-imagenet/venv/bin/python3',
       max_restarts: 10,
       min_uptime: 5000,
