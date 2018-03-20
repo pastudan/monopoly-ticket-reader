@@ -169,7 +169,7 @@ def process(image, redis_client=None):
         left = int(width * .078)
 
         onlineCodeImage = pilImage.crop((left, top, right, bottom))
-        onlineCodeImage.save("image-uploads/online/%s_%s_a.jpg" % index)
+        onlineCodeImage.save("image-uploads/online/%s_%s.jpg" % (uuid, index))
 
         # proportional crop positions for getting the manual game pieces
         top = int(height * 1)
