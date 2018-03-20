@@ -40,3 +40,4 @@ python3 -m scripts.retrain  --bottleneck_dir=tf_files/bottlenecks  --how_many_tr
 ### Deployment
 - The script at `bin/install.sh` will install dependencies and start the required API daemons, targeted toward a Ubuntu machine.
 - The script at `bin/deplopy.sh` will login to the API server, fetch any updates from the git repo, and restart the daemons.
+- Sample Nginx and PSQL config files are provided

@@ -34,8 +34,8 @@ def process(image, redis_client=None):
     edged = cv2.Canny(gray, 75, 200)
 
     # save the original image and the edge detected image
-    cv2.imwrite('output-images/1-original.png', orig)
-    cv2.imwrite('output-images/1-edges.png', edged)
+    # cv2.imwrite('output-images/1-original.png', orig)
+    # cv2.imwrite('output-images/1-edges.png', edged)
 
     # find the contours in the edged image, keeping only the
     # largest ones, and initialize the screen contour
@@ -100,7 +100,7 @@ def process(image, redis_client=None):
 
     # find and save the contour (outline) of the piece of paper
     cv2.drawContours(image, gamePieceGeometries, -1, (0, 255, 0), 8)
-    cv2.imwrite("../image-uploads/contour/%s.jpg" % basename, image)
+    cv2.imwrite("image-uploads/contour/%s.jpg" % basename, image)
 
     # these aspect ratios come from directly measuring the monopoly game pieces
     A = 0.306122449  # aspect ratio of fully stripped pieces
@@ -131,7 +131,7 @@ def process(image, redis_client=None):
         warped = four_point_transform(orig, geometry.reshape(4, 2) * ratio)
 
         # STEP 3: Apply perspective transform
-        cv2.imwrite("../image-uploads/ticket/%s_%s.jpg" % (basename, index), warped)
+        cv2.imwrite("image-uploads/ticket/%s_%s.jpg" % (basename, index), warped)
 
         # STEP 4: Crop only desired areas
         pilImage = Image.fromarray(warped)
@@ -159,10 +159,8 @@ def process(image, redis_client=None):
             # if its a large game piece, strip off both top and bottom strips
             pilImage = pilImage.crop((0, height * multiStripDelta, width, height - height * multiStripDelta))
 
-        pilImage.save("output-images/5-strip-cropped-%s.png" % index)
+        # pilImage.save("output-images/5-strip-cropped-%s.png" % index)
 
-        if index == 0:
-            rando = pilImage
         # proportional crop positions for getting the online code
         width, height = pilImage.size
         top = int(height * .46)
@@ -171,7 +169,7 @@ def process(image, redis_client=None):
         left = int(width * .078)
 
         onlineCodeImage = pilImage.crop((left, top, right, bottom))
-        onlineCodeImage.save("output-images/6-online-code-cropped-%s.png" % index)
+        onlineCodeImage.save("image-uploads/online/%s_%s_a.jpg" % index)
 
         # proportional crop positions for getting the manual game pieces
         top = int(height * 1)
@@ -184,13 +182,13 @@ def process(image, redis_client=None):
 
         # save individual game pieces
         manual_1 = manualCodeImage.crop((0, 0, croppedWidth * 0.25, croppedHeight))
-        manual_1.save("../image-uploads/piece/%s_%s_a.jpg" % (basename, index))
+        manual_1.save("image-uploads/piece/%s_%s_a.jpg" % (basename, index))
         manual_2 = manualCodeImage.crop((croppedWidth * 0.25, 0, croppedWidth * 0.5, croppedHeight))
-        manual_2.save("../image-uploads/piece/%s_%s_b.jpg" % (basename, index))
+        manual_2.save("image-uploads/piece/%s_%s_b.jpg" % (basename, index))
         manual_3 = manualCodeImage.crop((croppedWidth * 0.5, 0, croppedWidth * 0.75, croppedHeight))
-        manual_3.save("../image-uploads/piece/%s_%s_c.jpg" % (basename, index))
+        manual_3.save("image-uploads/piece/%s_%s_c.jpg" % (basename, index))
         manual_4 = manualCodeImage.crop((croppedWidth * 0.75, 0, croppedWidth, croppedHeight))
-        manual_4.save("../image-uploads/piece/%s_%s_d.jpg" % (basename, index))
+        manual_4.save("image-uploads/piece/%s_%s_d.jpg" % (basename, index))
         # TODO publish an update for each ticket, so users can see the progress..
         # if redis_client:
         #     redis_client.lpush('ml-queue', "%s_%s_a" % (basename, index))
@@ -213,7 +211,7 @@ else:
     redis_client = redis.StrictRedis()
     while True:
         uuid = redis_client.brpoplpush('crop-queue', 'crop-processing')
-        path = "../image-uploads/original/%s" % uuid
+        path = "image-uploads/original/%s" % uuid
         numTickets = process(path, redis_client=redis_client)
         for ticketIndex in range(0, numTickets):
             for pieceIndex in ['a', 'b', 'c', 'd']:
