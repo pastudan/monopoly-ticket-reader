@@ -3,18 +3,17 @@
 }
 
 .App-logo {
-  height: 100px;
+  height: 52px;
   fill: white;
 }
 
 .App-header {
-  /*background: linear-gradient(#0aa3bc, #5256bc);*/
   background: url('burst.jpg');
   background-size: cover;
-  height: 150px;
-  padding: 20px;
+  height: 70px;
+  padding: 5px;
   color: white;
-  text-shadow: 1px 1px rgba(0, 0, 0, 0.2)
+  text-shadow: 1px 1px rgba(0, 0, 0, 0.2);
 }
 
 .App-pieces {
@@ -24,6 +23,7 @@
   text-transform: uppercase;
   letter-spacing: 2px;
   font-size: smaller;
+  color: #4f657d;
 }
 
 .App-header h1 {
@@ -44,16 +44,32 @@
   background: white;
 }
 
+.App-image-info {
+  overflow: auto;
+  margin-top: 0;
+}
+
 .App-image {
+  float: left;
   width: 150px;
-  min-height: 200px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0 auto;
+  margin: 0;
   border-radius: var(--smallBorderRadius);
   background: var(--siteSecondaryColor);
   border: 1px solid var(--siteTertiaryTextColor);
+  transition: 1000ms all;
+}
+
+.App-image-cropped {
+  width: 64px;
+  margin: 0 43px 20px 43px
+}
+
+.App-image-placeholder {
+  height: 200px;
+}
+
+.App-image-found {
+  font-weight: bold;
 }
 
 .App-how ul {
@@ -66,20 +82,20 @@
 
 .App-button {
   display: inline-block;
-  color: white;
+  color: #40a75a;
   font-size: 20px;
-  border-radius: 3px;
-  background-color: #40a75a;
+  border-radius: 8px;
   padding: 20px 40px;
   text-transform: uppercase;
   margin: 5px;
   white-space: nowrap;
   position: relative;
   width: 240px;
+  border: 2px solid #40a75a;
 }
 
 .App-button.uploading {
-  background-color: #c2c2c2;
+  background-color: white;
 }
 
 .App-upload-progress-bar {
@@ -114,41 +130,91 @@
 
 .App-ticket-meta {
   position: absolute;
-  border-radius: 10px;
+  border-radius: 4px;
   background: black;
   color: white;
-  font-size: 10px;
-  padding: 2px 7px;
+  padding: 1px 4px;
+  font-size: 9px;
   bottom: -1px;
+  min-width: 36px;
 }
 
 .App-ticket-meta-label {
   text-transform: uppercase;
+  padding: 1px 4px;
 }
 
 .App-ticket-meta-label-a {
-  right: 147px;
+  right: 33.2%;
 }
 
 .App-ticket-meta-label-b {
-  right: 97px;
+  right: 22.3%;
 }
 
 .App-ticket-meta-label-c {
-  right: 47px;
+  right: 11%;
 }
 
 .App-ticket-meta-label-d {
-  right: -2px
+  right: -0.5%
 }
 
-.App-ticket-meta-time {
-  left: -8px;
+.App-image-time-hr {
+  margin: 0 0 -14px 0;
+  outline: none;
+  border: 1px #dae2e9;
+  border-style: solid none none none;
 }
 
-.App-ticket-meta-time svg{
-  fill: white;
+.App-image-time {
+  background: #dae2e9;
+  color: #4985b5;
+  border-radius: 4px;
+  font-size: 10px;
+  display: inline-block;
+  padding: 2px 12px;
+  outline: 10px solid white;
+}
+
+.App-image-time svg{
+  fill: #4985b5;
   display: inline-block;
   height: 10px;
   margin: 0 6px -2px -3px;
+}
+
+h2 {
+  text-transform: uppercase;
+  color: #97c2e2;
+  margin-top: 0;
+}
+
+.App-ticket-winner {
+  background-color: #00ffaf;
+  -webkit-animation: flash 2s infinite;
+  animation: flash 2s infinite;
+  color: black;
+  font-size: 13px;
+  font-weight: bold;
+  left: 5%;
+  bottom: 41%;
+  padding: 10px 20px;
+}
+
+.App-ticket-meta .fa-times {
+  margin-right: 5px;
+}
+
+@keyframes flash {
+  from,
+  50%,
+  to {
+    opacity: 1;
+  }
+
+  25%,
+  75% {
+    opacity: 0;
+  }
 }
