@@ -7,11 +7,12 @@ const shortid = require('shortid')
 const sharp = require('sharp')
 const PgClient = require('pg').Client
 const cors = require('cors')
+const {validPieces} = require('./valid-prizes')
 
 const pgClient = new PgClient()
 pgClient.connect()
 const apiPort = process.env.API_PORT || 3001
-const wsPort = process.env.WS_PORT || 8080
+const wsPort = process.env.WS_PORT || 3002
 const app = express()
 const redisClient = redis.createClient()
 const redisSubscriber = redis.createClient()
@@ -65,7 +66,7 @@ wss.on('connection', function connection (ws) {
 redisSubscriber.subscribe(['crop-updates', 'ml-updates'])
 const channelMapping = {
   'crop-updates': cropUpdate,
-  'ml-updates': mlUpdate,
+  'ml-updates':   mlUpdate,
 }
 redisSubscriber.on('message', function (channel, payload) {
   if (typeof channelMapping[channel] !== 'function') {
@@ -138,12 +139,13 @@ app.post('/upload', function (req, res) {
 
 app.get('/classify', async function (req, res) {
   // TODO add authentication and only allow classification from admins
-  res.sendStatus(401)
-  return
+  // res.sendStatus(401)
+  // return
 
   const {piece, label} = req.query
   console.log(piece, label)
-  if (piece) {
+
+  if (piece && validPieces.includes(label.toLowerCase())) {
     await pgClient.query('update pieces set human_label = $1::text where piece_id = $2::text', [label, piece])
   }
 

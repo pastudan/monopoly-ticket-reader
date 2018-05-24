@@ -6,7 +6,8 @@ import moment from 'moment'
 
 const API_HOST = process.env.REACT_APP_API_URL
 const RARE_PIECES = [
-  '129FA', // not rare, just for testing...
+  '105AE', // not rare, just for testing...
+
   '108AH', '110BB', '116BH', '119CC', '121DA', '126EB', '132FD', '135GC', '138HB', '144JD', '145KA', '149LA', '154MB', '159NC', '164OD', '166PB', '172QD', '173RA', '179SC', '181TA', '182TB', '189VD', '190VE', '193WC', '194WD', '199XD', '200XE', '203YB', '206YE', '207ZA', '209ZC', '213AB', '218BC', '220CA', '227DD', '228EA', '235DS', '237GB', '242HC']
 
 class App extends Component {
@@ -173,7 +174,7 @@ class App extends Component {
               <FontAwesome name='camera'/> Scan ticket
             </div>}
           </label>
-          <div className="App-pieces">to see if you have any rare pieces</div>
+          <div className="App-pieces">to see if you have a winning ticket</div>
         </section>
 
         {image ? <section className="App-section App-image-info">
@@ -209,7 +210,7 @@ class App extends Component {
                   Piece(s) {rareInTicket.join(', ')} are rare!!!
                 </div> : <div className="App-ticket-meta">
                   <FontAwesome name='times'/>
-                  No rare pieces
+                  Not a winning ticket
                 </div>}
               </div>)
             }
